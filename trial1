@@ -1,0 +1,40 @@
+import requests
+
+def get_environment_id(api_url, auth_token):
+    # Construct the API endpoint for getting the environment ID
+    endpoint_url = f"{api_url}/rest/2.0/environments"
+
+    # Set up headers with authentication token
+    headers = {
+        'Authorization': f'Bearer {auth_token}',
+        'Content-Type': 'application/json',
+    }
+
+    try:
+        # Make a GET request to the API endpoint
+        response = requests.get(endpoint_url, headers=headers)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Assuming the response is in JSON format and contains the environment ID
+            environment_id = response.json()['id']  # Adjust this based on the actual response structure
+            return environment_id
+        else:
+            # Print an error message if the request was not successful
+            print(f"Error: {response.status_code} - {response.text}")
+            return None
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return None
+
+# Example usage
+api_url = "https://your-collibra-instance-url"
+auth_token = "your_authentication_token"
+
+environment_id = get_environment_id(api_url, auth_token)
+
+if environment_id:
+    print(f"The environment ID is: {environment_id}")
+else:
+    print("Failed to retrieve the environment ID.")
